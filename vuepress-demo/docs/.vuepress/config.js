@@ -1,89 +1,90 @@
+const path = require('path');
+
 module.exports = {
-  title: 'Hello Mozambique',
-  description: 'Hello, my friend!',
+  base: '/dist/', // 打包部署的基础路径，设置不对会导致css样式无法加载等问题
+  title: 'TServer',
+  description: '探索和发现地理价值',
   head: [
       ['link', {
           rel: 'icon',
           href: `/favicon.ico`
       }]
   ],
-  dest: './docs/.vuepress/dist',
+  dest: './docs/.vuepress/dist', // build 打包后生成的文件位置
+  host: 'localhost',
+  port: 999,
   ga: '',
   evergreen: true,
-  // 配置导航栏的nav 通过 themeConfig nav
   themeConfig: {
+    // 导航栏
     nav: [
-      { text: 'Home', link: '/' },                      // 根路径
-      { text: 'Guide', link: '/guide/1安装' },
-      { text: 'External', link: 'https://cn.bing.com' }, // 外部链接
-      // 显示下拉列表
+      { text: '操作指南', link: '/guide/安装' },
       {
-        text: 'Languages',
+        text: '开发文档',
         items: [
-          { text: 'Chinese', link: '/languages/chinese' },
-          { text: 'English', link: '/languages/english' }
+          { text: 'TServer',link: '/TServer/mapServer' },
+          { text: 'Onemap', link: '/Onemap/'},
         ]
       },
-      // 下拉列表显示分组
+      { text: '样例展示', link: 'http://map.taiji.com.cn' },
       {
-        text: '高级',
+        text: '语言',
         items: [
-          { 
-            text: '算法', 
-            items: [
-              { text: '冒泡', link: '/languages/chinese' },
-              { text: '快速', link: '/languages/english' }
-            ] 
-          },
-          { 
-            text: '设计模式', 
-            items: [
-              { text: '工厂', link: '/languages/chinese' },
-              { text: '单例', link: '/languages/english'},
-            ] 
-          },
+          { text: '中文', link: '/languages/chinese' },
+          { text: '英文', link: '/languages/english' }
         ]
-      }
+      },
+      { text: '联系我们', link: '/connect'}
     ],
 
-    // auto为全部页面自己生成自己的侧边栏
-    // sidebar: 'auto'
+    // 侧边栏
+    sidebarDepth: 1, // 设置侧边栏深度
+    sidebar: {
+      '/guide/': [
+        '/guide/安装',
+        '/guide/初始化',
+        '/guide/导航栏',
+        '/guide/侧边栏',
+        '/guide/搜索框',
+        '/guide/更新时间',
+        '/guide/自定义页面类'
+      ],
+      '/TServer/': [
+        '/TServer/mapServer',
+        '/TServer/searchServer',
+        '/TServer/restServer',
+      ],
+      '/Onemap/': [
+        '/Onemap/'
+      ],
+      '/languages/': [
+        '/languages/chinese',
+        '/languages/english'
+      ],
+      '/': [
+        '',
+        'connect'
+      ]
+    },
 
-    // 项目只显示一个侧边栏
-    // sidebar: [
-    //   '/',
-    //   '/guide/README.md',
-    //   ['/languages/chinese', '/languages/english'],
-    //   '/home1',
-    //   'home2',
-    //   '/home3'
-    // ]
-
-    // sidebarDepth: 2, // 设置侧边栏深度
-    sidebar: [
-      {
-        title: 'Home1',
-        collapsable: false, // 设置是否可折叠
-        children: ['home1']
-      },
-      {
-        title: 'Guide',
-        collapsable: false, // 设置是否可折叠
-        children: [
-          '/guide/1安装',
-          '/guide/2初始化',
-          '/guide/3导航栏',
-          '/guide/4侧边栏'
-        ]
-      },
-      {
-        title: 'languages',
-        collapsable: true, // 设置是否可折叠
-        children: [
-          '/languages/chinese',
-          '/languages/english'
-        ]
+    // 配置静态资源
+    configureWebpack: {
+      resolve: {
+        alias: {
+          '@vuepress': path.join(__dirname, '../images/vuepress')
+        }
       }
-    ]
+    },
+
+    // algolia搜索
+    algolia: {
+      apiKey: '<API_KEY>',
+      indexName: '<INDEX_NAME>'
+    }
+  },
+  // 插件
+  plugins: {
+    '@vuepress/back-to-top': true,
+    // '@vuepress/search': true
   }
 }
